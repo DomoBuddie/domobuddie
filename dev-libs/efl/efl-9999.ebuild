@@ -7,7 +7,7 @@ inherit eutils git-r3 autotools
 DESCRIPTION="Enlightenment Foundation Core Libraries"
 HOMEPAGE="http://www.enlightenment.org/"
 EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
-SLOT=”0”
+SLOT="0"
 
 src_prepare() {
 eautoreconf
