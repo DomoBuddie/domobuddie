@@ -30,7 +30,8 @@ DEPEND="dev-libs/efl
 	sys-apps/systemd"
 
 src_prepare() {
-	efl_src_prepare
+eapply_user
+efl_src_prepare
 }
 
 src_configure() {
