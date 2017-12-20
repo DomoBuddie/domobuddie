@@ -12,7 +12,7 @@ EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
 
 SLOT="0"
 
-IUSE="apulse avahi +bmp debug doc drm +eet egl fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer gstreamer010 harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound systemd tga tiff tslib v4l valgrind wayland webp X xim xine xpm"
+IUSE="apulse audio avahi cxx-bindings +bmp debug doc drm +eet egl fb fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer gstreamer1 harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound static static-libs systemd tga tiff tslib v4l2 valgrind wayland webp X xim xine xpm xpresent"
 
 REQUIRED_USE="
 	egl?		( gles )
@@ -166,7 +166,7 @@ src_configure() {
 	fi
 	config+=(
 		$(use_enable avahi)
-		$(use_enable cxx-bindings cxx-bindings)
+		$(use_enable cxx-bindings)
 		$(use_enable doc)
 		$(use_enable fbcon fb)
 		$(use_enable fontconfig)
@@ -199,7 +199,7 @@ src_configure() {
 		--enable-image-loader-tga
 		--enable-image-loader-wbmp
 		$(use_enable gif image-loader-gif)
-		$(use_enable jp2k image-loader-jp2k)
+		$(use_enable jpeg2k image-loader-jp2k)
 		$(use_enable png image-loader-png)
 		$(use_enable tiff image-loader-tiff)
 		$(use_enable webp image-loader-webp)
