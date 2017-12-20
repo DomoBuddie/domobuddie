@@ -111,7 +111,6 @@ src_configure() {
 		$(use_enable bmp image-loader-wbmp)
 		$(use_enable drm)
 		$(use_enable drm elput)
-		$(use_enable doc)
 		$(use_enable eet image-loader-eet)
 		$(use_enable egl)
 		$(use_enable fbcon fb)
