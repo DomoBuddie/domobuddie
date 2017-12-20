@@ -54,7 +54,6 @@ DEPEND="app-doc/doxygen
 	app-text/libspectre
 	media-libs/libpng
 	media-sound/pulseaudio
-	#app-i18n/scim
 	media-libs/libsdl2
 	media-libs/libsndfile
 	media-libs/tiff
