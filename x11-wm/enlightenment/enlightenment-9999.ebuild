@@ -4,7 +4,7 @@ E_PKG_IUSE="doc nls"
 EFL_USE_GIT="yes"
 EFL_GIT_REPO_CATEGORY="core"
 
-inherit eutils git-r3 efl meson
+inherit eutils git-r3 meson
 
 DESCRIPTION="Enlightenment window manager"
 HOMEPAGE="http://www.enlightenment.org/"
