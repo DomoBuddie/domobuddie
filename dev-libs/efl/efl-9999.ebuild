@@ -9,8 +9,7 @@ HOMEPAGE="http://www.enlightenment.org/"
 EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
 SLOT="0"
 
-DEPEND="
-	app-doc/doxygen
+DEPEND="app-doc/doxygen
 	dev-libs/check
 	dev-libs/libinput
 	media-libs/mesa
@@ -65,8 +64,7 @@ DEPEND="
 	x11-libs/libXpm
 	media-libs/libraw
 	app-text/poppler
-	sys-power/pm-utils
-”
+	sys-power/pm-utils”
 
 src_prepare() {
 eautoreconf
