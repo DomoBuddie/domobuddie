@@ -83,7 +83,6 @@ DEPEND="app-doc/doxygen
 
 src_prepare() {
 eapply_user
-efl_src_prepare
 }
 
 src_configure() {
@@ -117,15 +116,5 @@ src_configure() {
 	"
 		# external lz4 support currently broken because of unstable ABI/API
 		#--enable-liblz4
-
-	efl_src_configure
 }
 
-src_compile() {
-	efl_src_compile
-}
-
-
-src_install() {
-	efl_src_install
-}
