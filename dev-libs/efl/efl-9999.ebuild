@@ -64,7 +64,7 @@ DEPEND="app-doc/doxygen
 	x11-libs/libXpm
 	media-libs/libraw
 	app-text/poppler
-	sys-power/pm-utils”
+	sys-power/pm-utils"
 
 src_prepare() {
 eautoreconf
