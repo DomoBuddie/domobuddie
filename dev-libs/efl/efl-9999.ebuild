@@ -82,39 +82,152 @@ DEPEND="app-doc/doxygen
 	sys-power/pm-utils"
 
 src_prepare() {
-eapply_user
+	[ ${PV} = 9999 ] && eautoreconf
+	eapply_user
 }
 
 src_configure() {
-	if use ssl && use gnutls ; then
-		einfo "You enabled both USE=ssl and USE=gnutls, but only one can be used;"
-		einfo "gnutls has been selected for you."
-	fi
-	if use opengl && use gles ; then
-		einfo "You enabled both USE=opengl and USE=gles, but only one can be used;"
-		einfo "opengl has been selected for you."
+	# if efreetd isn't already running it gets spawned as root with
+	# default XDG_RUNTIME_DIR for example: /run/user/0
+	export XDG_RUNTIME_DIR="${T}"
+
+	local config=()
+
+	# gnutls / openssl
+	if use gnutls; then
+		config+=( --with-crypto=gnutls )
+		use ssl && \
+			einfo "You enabled both USE=ssl and USE=gnutls, using gnutls"
+	elif use ssl; then
+		config+=( --with-crypto=openssl )
+	else
+		config+=( --with-crypto=none )
 	fi
 
-	export MY_ECONF="
-		${MY_ECONF}
-		--with-profile=$(usex debug debug release)
-		--with-crypto=$(usex gnutls gnutls $(usex ssl openssl none))
-		--with-x11=$(usex X xlib none)
+	# X
+	config+=(
 		$(use_with X x)
-		--with-opengl=$(usex opengl full $(usex gles es none))
-		--with-glib=$(usex glib)
-		--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
+		$(use_with X x11 xlib)
+	)
+	if use opengl; then
+		config+=( --with-opengl=full )
+		use gles &&  \
+			einfo "You enabled both USE=opengl and USE=gles, using opengl"
+	elif use gles; then
+		config+=( --with-opengl=es )
+		if use sdl; then
+			config+=( --with-opengl=none )
+			ewarn "You enabled both USE=sdl and USE=gles which isn't currently supported."
+			ewarn "Disabling gl for all backends."
+		fi
+	else
+		config+=( --with-opengl=none )
+	fi
+
+	# wayland
+	config+=(
+		$(use_enable egl)
+		$(use_enable wayland)
+	)
+
+	if use drm && use systemd; then
+		config+=(
+			--enable-drm
+			--enable-gl-drm
+			--enable-elput
+		)
+	else
+		einfo "You cannot build DRM support without systemd support, disabling drm engine"
+		config+=(
+			--disable-drm
+		)
+	fi
+	# bug 501074
+	if use pixman; then
+		config+=(
+			--enable-pixman
+			--enable-pixman-font
+			--enable-pixman-rect
+			--enable-pixman-line
+			--enable-pixman-poly
+			--enable-pixman-image
+			--enable-pixman-image-scale-sample
+		)
+	else
+		config+=(
+			--disable-pixman
+			--disable-pixman-font
+			--disable-pixman-rect
+			--disable-pixman-line
+			--disable-pixman-poly
+			--disable-pixman-image
+			--disable-pixman-image-scale-sample
+		)
+	fi
+	config+=(
+		$(use_enable avahi)
+		$(use_enable cxx-bindings cxx-bindings)
+		$(use_enable doc)
+		$(use_enable fbcon fb)
+		$(use_enable fontconfig)
+		$(use_enable fribidi)
+		$(use_enable gstreamer gstreamer1)
+		$(use_enable harfbuzz)
+		$(use_enable ibus)
+		$(use_enable nls)
+		$(use_enable physics)
+		$(use_enable pulseaudio)
+		$(use_enable pulseaudio audio)
+		$(use_enable scim)
+		$(use_enable sdl)
+		$(use_enable static-libs static)
+		$(use_enable systemd)
+		$(use_enable tslib)
+		$(use_enable v4l2)
+		$(use_enable xim)
+		$(use_enable xine)
+		$(use_enable xpresent)
+
+		# image loders
+		--enable-image-loader-bmp
+		--enable-image-loader-eet
+		--enable-image-loader-generic
+		--enable-image-loader-ico
+		--enable-image-loader-jpeg # required by ethumb
+		--enable-image-loader-psd
+		--enable-image-loader-pmaps
+		--enable-image-loader-tga
+		--enable-image-loader-wbmp
+		$(use_enable gif image-loader-gif)
+		$(use_enable jp2k image-loader-jp2k)
+		$(use_enable png image-loader-png)
+		$(use_enable tiff image-loader-tiff)
+		$(use_enable webp image-loader-webp)
+		$(use_enable xpm image-loader-xpm)
 
 		--enable-cserve
-		--enable-image-loader-generic
-		--enable-image-loader-jpeg
-
-		--disable-tizen
-		--enable-xinput2
-		--disable-xinput22
 		--enable-libmount
-	"
-		# external lz4 support currently broken because of unstable ABI/API
-		#--enable-liblz4
+		--enable-threads
+		--enable-xinput22
+
+		--disable-gesture
+		--disable-gstreamer # using gstreamer1
+		--disable-lua-old
+		--disable-multisense
+		--disable-tizen
+#		--disable-xinput2
+
+		--with-profile=$(usex debug debug release)
+		--with-glib=$(usex glib yes no)
+		--with-tests=$(usex test regular none)
+
+		--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
+	)
+
+	econf "${config[@]}"
 }
 
+src_install() {
+	default
+	prune_libtool_files
+}
