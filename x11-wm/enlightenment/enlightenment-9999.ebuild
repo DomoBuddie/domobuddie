@@ -30,9 +30,6 @@ DEPEND="dev-libs/efl
 	sys-apps/systemd"
 
 src_prepare() {
-	#remove useless startup checks since we know we have the deps
-	epatch "${FILESDIR}/quickstart.diff" || die
-
 	efl_src_prepare
 }
 
