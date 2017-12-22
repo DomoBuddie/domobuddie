@@ -1,6 +1,6 @@
 EAPI="5"
 
-inherit eutils git-r3
+inherit eutils git-r3 autotools
 
 DESCRIPTION="Enlightenment window manager"
 HOMEPAGE="http://www.enlightenment.org/"
