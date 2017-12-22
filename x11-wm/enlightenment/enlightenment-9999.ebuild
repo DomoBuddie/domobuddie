@@ -33,7 +33,7 @@ IUSE_E_MODULES=(
 	"${E_MODULES_DEFAULT[@]/#/+enlightenment_modules_}"
 	"${E_MODULES[@]/#/enlightenment_modules_}"
 )
-IUSE="doc +eeze egl nls pam pm-utils static-libs systemd +udev ukit wayland ${IUSE_E_MODULES[@]}"
+IUSE="doc +eeze egl nls pam pm-utils static-libs systemd +udev udisks ukit wayland ${IUSE_E_MODULES[@]}"
 
 # maybe even dev-libs/wlc for wayland USE flag
 RDEPEND="
