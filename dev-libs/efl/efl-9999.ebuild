@@ -1,6 +1,6 @@
 EAPI="5"
 
-inherit enlightenment pax-utils
+inherit enlightenment pax-utils git-r3
 
 DESCRIPTION="Enlightenment Foundation Core Libraries"
 HOMEPAGE="http://www.enlightenment.org/"
