@@ -70,7 +70,6 @@ src_configure() {
 	    -Dmount-eeze=$(usex eeze true false)
 	    -Ddevice-udev=$(usex udev true false)
 	    -Dmount-udisks=$(usex udisks true false)
-	    -Dinstall-sysactions=$(usex sysactions true false)
 	    -Dwayland=$(usex wayland true false)
 	    -Dxwayland=$(usex wayland true false)
 	    -Dxwayland-bin=$(usex wayland true false)
