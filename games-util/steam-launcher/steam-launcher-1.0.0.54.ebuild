@@ -12,8 +12,6 @@ DESCRIPTION="Installer, launcher and supplementary files for Valve's Steam clien
 HOMEPAGE="http://steampowered.com"
 SRC_URI="http://repo.steampowered.com/steam/pool/steam/s/steam/steam_${PV}.tar.gz"
 
-#EGIT_REPO_URI="https://github.com/ValveSoftware/steam-for-linux.git"
-
 KEYWORDS="~amd64 ~x86"
 LICENSE="ValveSteamLicense"
 
@@ -51,13 +49,6 @@ RDEPEND="
 			)"
 
 S=${WORKDIR}/steam/
-
-PATCHES=(
-	"${FILESDIR}"/steam-fix-ld-library-path.patch
-	"${FILESDIR}"/steam-runtime-default.patch
-	"${FILESDIR}"/steam-set-distrib-release.patch
-	"${FILESDIR}"/steam-fix-joystick-detection.patch
-)
 
 pkg_setup() {
 	linux-info_pkg_setup
