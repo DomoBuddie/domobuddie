@@ -33,7 +33,7 @@ IUSE_E_MODULES=(
 	"${E_MODULES_DEFAULT[@]/#/+enlightenment_modules_}"
 	"${E_MODULES[@]/#/enlightenment_modules_}"
 )
-IUSE="doc +eeze egl nls pam pm-utils static-libs sysactions systemd +udev udisks ukit wayland ${IUSE_E_MODULES[@]}"
+IUSE="doc +eeze egl nls pam pm-utils static-libs systemd +udev udisks ukit wayland ${IUSE_E_MODULES[@]}"
 
 # maybe even dev-libs/wlc for wayland USE flag
 RDEPEND="
@@ -88,13 +88,4 @@ src_configure() {
 src_install() {
 	meson_src_install
 	insinto /etc/enlightenment
-
-	newins "${FILESDIR}/gentoo-sysactions.conf" sysactions.conf
-
-	if use debug; then
-		einfo "Registering gdb into your /etc/enlightenment/sysactions.conf"
-
-		echo "action: gdb /usr/bin/gdb" >>				\
-							${D}/etc/enlightenment/sysactions.conf
-	fi
 }
