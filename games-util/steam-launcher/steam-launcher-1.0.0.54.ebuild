@@ -6,7 +6,7 @@ EAPI=6
 # Please report bugs/suggestions on: https://github.com/anyc/steam-overlay
 # or come to #gentoo-gamerlay in freenode IRC
 
-inherit git-r3 eutils gnome2-utils linux-info prefix udev xdg
+inherit eutils gnome2-utils linux-info prefix udev xdg
 
 DESCRIPTION="Installer, launcher and supplementary files for Valve's Steam client"
 HOMEPAGE="http://steampowered.com"
