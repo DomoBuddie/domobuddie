@@ -13,7 +13,7 @@ EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
 
 LICENSE="BSD-2"
 [ "${PV}" = 9999 ] || KEYWORDS="~amd64 ~x86"
-SLOT="0.17/${PV%%_*}"
+SLOT="0"
 
 E_MODULES_DEFAULT=(
 	conf-applications conf-bindings conf-dialogs conf-display conf-interaction
@@ -59,9 +59,6 @@ S="${WORKDIR}/${P/_/-}"
 
 
 src_prepare() {
-	#remove useless startup checks since we know we have the deps
-	epatch "${FILESDIR}/quickstart.diff" || die
-
 	efl_src_prepare
 }
 
