@@ -59,6 +59,7 @@ S="${WORKDIR}/${P/_/-}"
 
 
 src_prepare() {
+	default
 	efl_src_prepare
 }
 
