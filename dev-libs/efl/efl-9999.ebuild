@@ -1,6 +1,6 @@
 EAPI="5"
 
-inherit enlightenment pax-utils eutils git-r3 autotools
+inherit enlightenment pax-utils
 
 DESCRIPTION="Enlightenment Foundation Core Libraries"
 HOMEPAGE="http://www.enlightenment.org/"
