@@ -1,10 +1,6 @@
-EAPI="6"
+EAPI="5"
 
-E_PKG_IUSE="doc nls"
-EFL_USE_GIT="yes"
-EFL_GIT_REPO_CATEGORY="core"
-
-inherit eutils git-r3 meson
+inherit eutils git-r3
 
 DESCRIPTION="Enlightenment window manager"
 HOMEPAGE="http://www.enlightenment.org/"
@@ -16,56 +12,76 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0"
 
-IUSE="eeze illume2 opengl pam pm-utils +sysactions systemd tracker
-		+udev udisks wayland xinerama xscreensaver"
+E_MODULES_DEFAULT=(
+	conf-applications conf-bindings conf-dialogs conf-display conf-interaction
+	conf-intl conf-menus conf-paths conf-performance conf-randr conf-shelves
+	conf-theme conf-window-manipulation conf-window-remembers
 
-DEPEND="dev-libs/efl
+	appmenu backlight battery bluez4 clock connman contact cpufreq everything
+	fileman fileman-opinfo gadman ibar ibox lokker mixer msgbus music-control
+	notification pager pager16 quickaccess shot start syscon systray tasks
+	teamwork temperature tiling winlist wizard xkbswitch
+)
+E_MODULES=(
+	access packagkit wl-desktop-shell wl-drm wl-fb wl-x11
+)
+IUSE="doc +eeze egl +nls pam pm-utils static-libs systemd ukit wayland
+	${E_MODULES_DEFAULT[@]/#/+enlightenment_modules_}
+	${E_MODULES[@]/#/enlightenment_modules_}
+"
+REQUIED_USE="!udev? ( eeze )"
+
+
+RDEPEND="|| ( >=dev-libs/efl-1.18.0 >=media-libs/elementary-1.17.0[X,wayland?] )
 	virtual/udev
 	x11-libs/libxcb
 	x11-libs/xcb-util-keysyms
-	media-libs/alsa-lib
-	sys-devel/gettext
-	sys-libs/pam
-	sys-power/pm-utils
-	sys-apps/systemd"
+	enlightenment_modules_connman? ( net-misc/connman )
+	enlightenment_modules_mixer? ( >=media-libs/alsa-lib-1.0.8 )
+	nls? ( virtual/libintl )
+	pam? ( sys-libs/pam )
+	pm-utils? ( sys-power/pm-utils )
+	systemd? ( sys-apps/systemd )
+	wayland? (
+		>=dev-libs/wayland-1.3.0
+		>=x11-libs/pixman-0.31.1
+		>=x11-libs/libxkbcommon-0.3.1
+	)"
+DEPEND="${RDEPEND}
+	doc? ( app-doc/doxygen )"
 
-src_prepare() {
-eapply_user
-efl_src_prepare
-}
+DOCS=( AUTHORS ChangeLog README )
 
-src_configure() {
-	local emesonargs=(
-	    -Dpam=$(usex pam true false)
-	    -Dsystemd=$(usex systemd true false)
-	    -Dmount-eeze=$(usex eeze true false)
-	    -Ddevice-udev=$(usex udev true false)
-	    -Dmount-udisks=$(usex udisks true false)
-	    -Dinstall-sysactions=$(usex sysactions true false)
-	    -Dwayland=$(usex wayland true false)
-	    -Dxwayland=$(usex wayland true false)
-	    -Dxwayland-bin=$(usex wayland true false)
+AUTOTOOLS_IN_SOURCE_BUILD=1
+S="${WORKDIR}/${P/_/-}"
+
+src_configure()
+{
+	local -a myconfargs=(
+		${EXTRA_E_CONF}
+		--disable-device-hal
+		--disable-simple-x11
+		--disable-wayland-only
+		--enable-conf
+		--enable-device-udev # instead of hal
+		--enable-enotify
+		--enable-files
+		--enable-install-enlightenment-menu
+		--enable-install-sysactions
+		$(use_enable doc)
+		$(use_enable egl wayland-egl)
+		$(use_enable nls)
+		$(use_enable pam)
+		$(use_enable static-libs static)
+		$(use_enable systemd)
+		$(use_enable ukit mount-udisks)
+		$(use_enable eeze mount-eeze)
+		$(use_enable wayland wayland-clients)
+		$(usex wayland '--enable-wl-desktop-shell' '')
 	)
-	meson_src_configure
-
-	local module=
-
-	for module in ${IUSE_ENLIGHTENMENT_MODULES}; do
-		module="${module#+}"
-		emesonargs+=" -D${module}=$(usex enlightenment_modules_${module} true false)"
+	local i
+	for i in ${E_MODULES_DEFAULT} ${E_MODULES}; do
+		myeconfargs+=( $(use_enable enlightenment_modules_${i} ${i}) )
 	done
-}
-
-src_install() {
-	meson_src_install
-	insinto /etc/enlightenment
-
-	newins "${FILESDIR}/gentoo-sysactions.conf" sysactions.conf
-
-	if use debug; then
-		einfo "Registering gdb into your /etc/enlightenment/sysactions.conf"
-
-		echo "action: gdb /usr/bin/gdb" >>				\
-							${D}/etc/enlightenment/sysactions.conf
-	fi
+	autotools-utils_src_configure
 }
