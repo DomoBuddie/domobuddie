@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit eutils
+inherit eutils meson
 [ "${PV}" = 9999 ] && inherit git-r3 autotools
 
 DESCRIPTION="Enlightenment DR19 window manager"
@@ -57,47 +57,46 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/${P/_/-}"
 
+
 src_prepare() {
-	[ ${PV} = 9999 ] && eautoreconf
+	#remove useless startup checks since we know we have the deps
+	epatch "${FILESDIR}/quickstart.diff" || die
+
+	efl_src_prepare
 }
 
 src_configure() {
-	local config=(
-		--disable-simple-x11
-		#--disable-wayland-only
-
-		--enable-conf
-		--enable-device-udev # instead of hal
-		#--enable-enotify
-		--enable-files
-		--enable-install-enlightenment-menu
-		--enable-install-sysactions
-
-		$(use_enable doc)
-		$(use_enable egl wayland-egl)
-		$(use_enable nls)
-		$(use_enable pam)
-		$(use_enable static-libs static)
-		$(use_enable systemd)
-		$(use_enable ukit mount-udisks)
-		$(use_enable eeze mount-eeze)
-		$(use_enable wayland wayland)
-		#$(use_enable wayland wayland-clients)
+	local emesonargs=(
+	    -Dpam=$(usex pam true false)
+	    -Dsystemd=$(usex systemd true false)
+	    -Dmount-eeze=$(usex eeze true false)
+	    -Ddevice-udev=$(usex udev true false)
+	    -Dmount-udisks=$(usex udisks true false)
+	    -Dinstall-sysactions=$(usex sysactions true false)
+	    -Dwayland=$(usex wayland true false)
+	    -Dxwayland=$(usex wayland true false)
+	    -Dxwayland-bin=$(usex wayland true false)
 	)
+	meson_src_configure
 
-	local i
-	for i in ${E_MODULES_DEFAULT} ${E_MODULES}; do
-		config+=( $(use_enable enlightenment_modules_${i} ${i}) )
+	local module=
+
+	for module in ${IUSE_ENLIGHTENMENT_MODULES}; do
+		module="${module#+}"
+		emesonargs+=" -D${module}=$(usex enlightenment_modules_${module} true false)"
 	done
-
-	if use wayland; then
-		config+=( --enable-enlightenment_modules_wl-desktop-shell --enable-wl-x11 --enable-wl-wl --enable-wl-drm --enable-wl-text-input --enable-wl-weekeyboard)
-	fi
-
-	econf "${config[@]}"
 }
 
 src_install() {
-	default
-	prune_libtool_files
+	meson_src_install
+	insinto /etc/enlightenment
+
+	newins "${FILESDIR}/gentoo-sysactions.conf" sysactions.conf
+
+	if use debug; then
+		einfo "Registering gdb into your /etc/enlightenment/sysactions.conf"
+
+		echo "action: gdb /usr/bin/gdb" >>				\
+							${D}/etc/enlightenment/sysactions.conf
+	fi
 }
