@@ -71,21 +71,6 @@ pkg_setup() {
 src_prepare() {
 	xdg_environment_reset
 	default
-
-	sed -i 's:TAG+="uaccess":\0, TAG+="udev-acl":g' \
-		lib/udev/rules.d/99-steam-controller-perms.rules || die
-
-	sed -i \
-		-e "s:@@DEBIAN_COMPAT@@:${EPREFIX}/usr/$(get_libdir)/debiancompat$(use amd64 && echo "\\:${EPREFIX}/usr/$(ABI=x86 get_libdir)/debiancompat"):g" \
-		-e "s:@@STEAM_RUNTIME@@:$(usex steamruntime 1 0):g" \
-		steam || die
-
-	# use steam launcher version as release number as it is a bit more helpful than the baselayout version
-	sed -i -e "s,export DISTRIB_RELEASE=\"2.2\",export DISTRIB_RELEASE=\"${PVR}\"," steam || die
-
-	# Still need EPREFIX in the DEBIAN_COMPAT sed replacement because
-	# the regular expression used by hprefixify doesn't match here.
-	hprefixify steam
 }
 
 src_compile() {
