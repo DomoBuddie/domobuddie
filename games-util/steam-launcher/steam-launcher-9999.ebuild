@@ -45,8 +45,6 @@ RDEPEND="
 			>=sys-libs/glibc-2.15
 			)"
 
-S=${WORKDIR}/steam/
-
 PATCHES=(
 	"${FILESDIR}"/steam-fix-ld-library-path.patch
 	"${FILESDIR}"/steam-runtime-default.patch
