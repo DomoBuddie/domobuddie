@@ -45,13 +45,6 @@ RDEPEND="
 			>=sys-libs/glibc-2.15
 			)"
 
-PATCHES=(
-	"${FILESDIR}"/steam-fix-ld-library-path.patch
-	"${FILESDIR}"/steam-runtime-default.patch
-	"${FILESDIR}"/steam-set-distrib-release.patch
-	"${FILESDIR}"/steam-fix-joystick-detection.patch
-)
-
 pkg_setup() {
 	linux-info_pkg_setup
 
