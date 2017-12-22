@@ -56,6 +56,10 @@ DOCS=( AUTHORS ChangeLog README )
 AUTOTOOLS_IN_SOURCE_BUILD=1
 S="${WORKDIR}/${P/_/-}"
 
+src_prepare() {
+	eautoreconf
+}
+
 src_configure()
 {
 	local -a myconfargs=(
