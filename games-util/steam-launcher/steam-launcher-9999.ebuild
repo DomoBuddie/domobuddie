@@ -69,26 +69,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin steam
-
-	insinto /usr/lib/steam/
-	doins bootstraplinux_ubuntu12_32.tar.xz
-
-	udev_dorules lib/udev/rules.d/99-steam-controller-perms.rules lib/udev/rules.d/60-HTC-Vive-perms.rules
-
-	dodoc debian/changelog steam_install_agreement.txt
-	doman steam.6
-
-	domenu steam.desktop
-
-	cd icons/ || die
-	for s in * ; do
-		doicon -s ${s} ${s}/steam.png
-	done
-
-	# tgz archive contains no separate pixmap, see #38
-	insinto /usr/share/pixmaps/
-	newins 48/steam_tray_mono.png steam_tray_mono.png
+	default
 }
 
 pkg_preinst() {
