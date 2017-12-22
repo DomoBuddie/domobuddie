@@ -48,13 +48,13 @@ RDEPEND="|| ( >=dev-libs/efl-1.18.0 >=media-libs/elementary-1.17.0[X,wayland?] )
 		>=x11-libs/pixman-0.31.1
 		>=x11-libs/libxkbcommon-0.3.1
 	)"
+
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )"
 
 DOCS=( AUTHORS ChangeLog README )
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
-S="${WORKDIR}/${P/_/-}"
 
 src_prepare() {
 	eautoreconf
