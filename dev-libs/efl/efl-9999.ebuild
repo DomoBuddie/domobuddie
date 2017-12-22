@@ -21,7 +21,7 @@ fi
 
 SLOT="0"
 
-IUSE="apulse audio avahi +bmp debug doc drm +eet egl fb fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound static static-libs systemd test tga tiff tslib v4l2 valgrind wayland webp X xim xine xpm xpresent unwind"
+IUSE="apulse audio avahi +bmp debug doc drm +eet egl fb fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound static static-libs systemd test tga tiff tslib v4l2 valgrind wayland webp X xim xine xpm xpresent unwind v4l"
 
 REQUIRED_USE="
 	egl?		( gles )
