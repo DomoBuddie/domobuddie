@@ -5,7 +5,18 @@ inherit enlightenment pax-utils
 DESCRIPTION="Enlightenment Foundation Core Libraries"
 HOMEPAGE="http://www.enlightenment.org/"
 
-EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
+MY_P=${P/_/-}
+
+if [[ "${PV}" == "9999" ]] ; then
+	EGIT_SUB_PROJECT="core"
+	EGIT_URI_APPEND="${PN}"
+elif [[ *"${PV}" == *"_pre"* ]] ; then
+	MY_P=${P%%_*}
+	SRC_URI="https://download.enlightenment.org/pre-releases/${MY_P}.tar.xz"
+else
+	SRC_URI="https://download.enlightenment.org/rel/libs/${PN}/${MY_P}.tar.xz"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
+fi
 
 SLOT="0"
 
