@@ -10,9 +10,9 @@ inherit git-r3 eutils gnome2-utils linux-info prefix udev xdg
 
 DESCRIPTION="Installer, launcher and supplementary files for Valve's Steam client"
 HOMEPAGE="http://steampowered.com"
-#SRC_URI="http://repo.steampowered.com/steam/pool/steam/s/steam/steam_${PV}.tar.gz"
+SRC_URI="http://repo.steampowered.com/steam/pool/steam/s/steam/steam_${PV}.tar.gz"
 
-EGIT_REPO_URI="https://github.com/ValveSoftware/steam-for-linux.git"
+#EGIT_REPO_URI="https://github.com/ValveSoftware/steam-for-linux.git"
 
 KEYWORDS="~amd64 ~x86"
 LICENSE="ValveSteamLicense"
