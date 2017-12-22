@@ -65,7 +65,7 @@ src_prepare() {
 }
 
 src_compile() {
-	:
+	default
 }
 
 src_install() {
