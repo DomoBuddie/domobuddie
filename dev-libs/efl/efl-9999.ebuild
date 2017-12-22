@@ -9,7 +9,7 @@ EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
 
 SLOT="0"
 
-IUSE="apulse audio avahi cxx-bindings +bmp debug doc drm +eet egl fb fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer gstreamer1 harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound static static-libs systemd test tga tiff tslib v4l2 valgrind wayland webp X xim xine xpm xpresent"
+IUSE="apulse audio avahi +bmp debug doc drm +eet egl fb fbcon +fontconfig fribidi gesture gif gles glib gnutls gstreamer harfbuzz +ico ibus jpeg2k libressl +multisense neon nls oldlua opengl ssl physics pixman +png postscript +ppm +psd pulseaudio raw scim sdl sound static static-libs systemd test tga tiff tslib v4l2 valgrind wayland webp X xim xine xpm xpresent unwind"
 
 REQUIRED_USE="
 	egl?		( gles )
