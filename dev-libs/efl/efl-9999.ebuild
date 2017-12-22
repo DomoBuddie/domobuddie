@@ -10,6 +10,7 @@ MY_P=${P/_/-}
 if [[ "${PV}" == "9999" ]] ; then
 	EGIT_SUB_PROJECT="core"
 	EGIT_URI_APPEND="${PN}"
+	EGIT_REPO_URI="https://git.enlightenment.org/core/${PN}.git"
 elif [[ *"${PV}" == *"_pre"* ]] ; then
 	MY_P=${P%%_*}
 	SRC_URI="https://download.enlightenment.org/pre-releases/${MY_P}.tar.xz"
