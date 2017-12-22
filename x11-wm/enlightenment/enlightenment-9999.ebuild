@@ -22,6 +22,7 @@ E_MODULES_DEFAULT=(
 	notification pager pager16 quickaccess shot start syscon systray tasks
 	teamwork temperature tiling winlist wizard xkbswitch
 )
+
 E_MODULES=(
 	access packagkit wl-desktop-shell wl-drm wl-fb wl-x11
 )
@@ -84,4 +85,9 @@ src_configure()
 		myeconfargs+=( $(use_enable enlightenment_modules_${i} ${i}) )
 	done
 	autotools-utils_src_configure
+}
+
+src_install() {
+	default
+	prune_libtool_files
 }
